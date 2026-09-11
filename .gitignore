@@ -1,0 +1,10 @@
+.env
+.directory
+.claude/
+
+/bin/
+/cmd/*/cmd
+*.exe
+*.test
+*.out
+coverage.txt
