@@ -1,6 +1,7 @@
 package http
 
 import (
+	"context"
 	"errors"
 	"net/http"
 
@@ -36,7 +37,7 @@ func (h *Handler) Reservar(c *gin.Context) {
 		Status:    "confirmada",
 	}
 
-	if err := h.service.Reservar(r); err != nil {
+	if err := h.service.Reservar(c.Request.Context(), r); err != nil {
 		c.JSON(statusParaErro(err), gin.H{"erro": err.Error()})
 		return
 	}
@@ -59,6 +60,8 @@ func statusParaErro(err error) int {
 		errors.Is(err, reservas.ErrAssentoIDVazio),
 		errors.Is(err, reservas.ErrUsuarioIDVazio):
 		return http.StatusBadRequest
+	case errors.Is(err, context.DeadlineExceeded):
+		return http.StatusGatewayTimeout
 	default:
 		return http.StatusInternalServerError
 	}

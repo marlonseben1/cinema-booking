@@ -1,18 +1,43 @@
 services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   api1:
     build: .
+    environment:
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672/
     expose:
       - "8080"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 
   api2:
     build: .
+    environment:
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672/
     expose:
       - "8080"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 
   api3:
     build: .
+    environment:
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672/
     expose:
       - "8080"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 
   gateway:
     image: nginx:1.27-alpine

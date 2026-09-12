@@ -1,6 +1,9 @@
 package reservas
 
-import "errors"
+import (
+	"context"
+	"errors"
+)
 
 var (
 	ErrAssentoOcupado = errors.New("assento já reservado")
@@ -20,4 +23,19 @@ type Reserva struct {
 type ReservaStore interface {
 	Reservar(r Reserva) error
 	ListarReservas(filmeID string) []Reserva
+}
+
+type ComandoReservarAssento struct {
+	FilmeID   string
+	AssentoID string
+	UsuarioID string
+}
+
+type RespostaComando struct {
+	Sucesso bool
+	Erro    string
+}
+
+type ComandoPublisher interface {
+	Publicar(ctx context.Context, cmd ComandoReservarAssento) (RespostaComando, error)
 }
