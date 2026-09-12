@@ -39,3 +39,16 @@ type RespostaComando struct {
 type ComandoPublisher interface {
 	Publicar(ctx context.Context, cmd ComandoReservarAssento) (RespostaComando, error)
 }
+
+func ValidarReserva(r Reserva) error {
+	if r.FilmeID == "" {
+		return ErrFilmeIDVazio
+	}
+	if r.AssentoID == "" {
+		return ErrAssentoIDVazio
+	}
+	if r.UsuarioID == "" {
+		return ErrUsuarioIDVazio
+	}
+	return nil
+}

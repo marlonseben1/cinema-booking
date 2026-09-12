@@ -15,14 +15,8 @@ func NewService(store ReservaStore, publisher ComandoPublisher) *Service {
 }
 
 func (s *Service) Reservar(ctx context.Context, r Reserva) error {
-	if r.FilmeID == "" {
-		return ErrFilmeIDVazio
-	}
-	if r.AssentoID == "" {
-		return ErrAssentoIDVazio
-	}
-	if r.UsuarioID == "" {
-		return ErrUsuarioIDVazio
+	if err := ValidarReserva(r); err != nil {
+		return err
 	}
 
 	resp, err := s.publisher.Publicar(ctx, ComandoReservarAssento{
