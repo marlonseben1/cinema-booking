@@ -66,6 +66,16 @@ services:
       postgres:
         condition: service_healthy
 
+  notifier:
+    build:
+      context: .
+      dockerfile: Dockerfile.notifier
+    environment:
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672/
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
   gateway:
     image: nginx:1.27-alpine
     ports:

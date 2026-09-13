@@ -35,6 +35,11 @@ func main() {
 	}
 	defer conn.Close()
 
+	notificador, err := mensageria.NewNotificacaoPublisher(conn)
+	if err != nil {
+		log.Fatalf("criar publisher de notificações: %v", err)
+	}
+
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
 
@@ -57,6 +62,16 @@ func main() {
 		}
 
 		log.Printf("reserva confirmada: filme=%s assento=%s usuario=%s", r.FilmeID, r.AssentoID, r.UsuarioID)
+
+		notif := mensageria.NotificacaoReserva{
+			FilmeID:   r.FilmeID,
+			AssentoID: r.AssentoID,
+			UsuarioID: r.UsuarioID,
+		}
+		if err := notificador.Publicar(context.Background(), notif); err != nil {
+			log.Printf("publicar notificação: %v", err)
+		}
+
 		return reservas.RespostaComando{Sucesso: true}
 	})
 	if err != nil && err != context.Canceled {
