@@ -1,0 +1,235 @@
+:root {
+    --bg: #0d1117;
+    --card-bg: #161b22;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --text: #e6edf3;
+    --text-dim: #8b949e;
+    --seat-available: #30363d;
+    --seat-hold-mine: #d4a017;
+    --seat-confirmed: #c0392b;
+    --green: #2ea043;
+    --red: #da3633;
+}
+* {
+    box-sizing: border-box;
+}
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Courier New", ui-monospace, monospace;
+    font-size: 17px;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+header h1 {
+    font-size: 1.8rem;
+    margin: 0;
+    letter-spacing: 1px;
+}
+.user-id {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 0.7rem;
+}
+.config {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+.config input {
+    flex: 1;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 0.5rem 0.7rem;
+    font-family: inherit;
+    font-size: inherit;
+}
+.movies {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.movie-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.1rem;
+    cursor: pointer;
+}
+.movie-card:hover {
+    border-color: var(--text-dim);
+}
+.movie-card.selected {
+    border-color: var(--accent);
+}
+.movie-card h3 {
+    margin: 0 0 0.3rem;
+    font-size: 1.2rem;
+}
+.movie-card p {
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 0.95rem;
+}
+.screen-area {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+.screen-label {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    margin-bottom: 0.4rem;
+}
+.screen-bar {
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--accent),
+        transparent
+    );
+    border-radius: 50%;
+}
+.seat-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+}
+.seat-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.row-label {
+    width: 1.4rem;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.95rem;
+}
+.seat {
+    width: 2.7rem;
+    height: 2.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: var(--seat-available);
+    cursor: pointer;
+    font-size: 0.95rem;
+    user-select: none;
+    transition: transform 0.1s;
+}
+.seat:hover:not(.seat--confirmed):not(.seat--hold-mine) {
+    transform: scale(1.08);
+}
+.seat--hold-mine {
+    background: var(--seat-hold-mine);
+    color: #1a1a1a;
+    cursor: wait;
+}
+.seat--confirmed {
+    background: var(--seat-confirmed);
+    cursor: not-allowed;
+}
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.4rem;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.legend-swatch {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 3px;
+}
+.checkout {
+    margin-top: 2rem;
+    background: var(--card-bg);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.4rem;
+}
+.checkout h3 {
+    margin: 0 0 0.7rem;
+    font-size: 1.2rem;
+}
+.checkout-info {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-dim);
+    font-size: 1rem;
+    margin-bottom: 0.9rem;
+}
+.timer {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1.1rem;
+    letter-spacing: 2px;
+}
+.timer.urgent {
+    color: var(--red);
+}
+.checkout-buttons {
+    display: flex;
+    gap: 0.7rem;
+}
+.btn {
+    flex: 1;
+    padding: 0.85rem;
+    border-radius: 6px;
+    border: none;
+    font-family: inherit;
+    font-size: 1.05rem;
+    cursor: pointer;
+}
+.btn--confirm {
+    background: var(--green);
+    color: white;
+}
+.btn--release {
+    background: transparent;
+    border: 1px solid var(--red);
+    color: var(--red);
+}
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.status-msg {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 1rem;
+    min-height: 1.2rem;
+}
+.status-msg.success {
+    color: var(--green);
+}
+.status-msg.error {
+    color: var(--red);
+}

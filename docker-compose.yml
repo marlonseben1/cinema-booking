@@ -27,30 +27,39 @@ services:
     build: .
     environment:
       RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672/
+      POSTGRES_DSN: postgres://cinema:cinema@postgres:5432/cinema_booking?sslmode=disable
     expose:
       - "8080"
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      postgres:
         condition: service_healthy
 
   api2:
     build: .
     environment:
       RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672/
+      POSTGRES_DSN: postgres://cinema:cinema@postgres:5432/cinema_booking?sslmode=disable
     expose:
       - "8080"
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      postgres:
         condition: service_healthy
 
   api3:
     build: .
     environment:
       RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672/
+      POSTGRES_DSN: postgres://cinema:cinema@postgres:5432/cinema_booking?sslmode=disable
     expose:
       - "8080"
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      postgres:
         condition: service_healthy
 
   worker:

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"os"
 	"time"
@@ -23,6 +24,21 @@ func main() {
 	if rabbitmqURL == "" {
 		rabbitmqURL = "amqp://guest:guest@localhost:5672/"
 	}
+	postgresDSN := os.Getenv("POSTGRES_DSN")
+	if postgresDSN == "" {
+		postgresDSN = "postgres://cinema:cinema@localhost:5432/cinema_booking?sslmode=disable"
+	}
+
+	db, err := sql.Open("pgx", postgresDSN)
+	if err != nil {
+		log.Fatalf("conectar ao postgres: %v", err)
+	}
+	defer db.Close()
+
+	store := reservas.NewPostgresStore(db)
+	if err := store.Migrate(); err != nil {
+		log.Fatalf("aplicar migrations: %v", err)
+	}
 
 	conn, err := amqp.Dial(rabbitmqURL)
 	if err != nil {
@@ -35,7 +51,6 @@ func main() {
 		log.Fatalf("criar rpc client: %v", err)
 	}
 
-	store := reservas.NewMemoryStore()
 	service := reservas.NewService(store, publisher)
 	router := httptransport.NewRouter(service)
 

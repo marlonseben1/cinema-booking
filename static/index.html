@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Cinema Booking</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <header>
+            <h1>Cinema Booking</h1>
+            <div class="user-id">usuário: <span id="userIdLabel"></span></div>
+        </header>
+
+        <div class="config">
+            <input id="baseUrl" value="http://localhost:8080" />
+        </div>
+
+        <div class="movies" id="movies"></div>
+
+        <div class="screen-area">
+            <div class="screen-label">TELA</div>
+            <div class="screen-bar"></div>
+        </div>
+
+        <div class="seat-grid" id="seatGrid"></div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <span
+                    class="legend-swatch"
+                    style="background: var(--seat-available)"
+                ></span
+                >Disponível
+            </div>
+            <div class="legend-item">
+                <span
+                    class="legend-swatch"
+                    style="background: var(--seat-hold-mine)"
+                ></span
+                >Seu hold
+            </div>
+            <div class="legend-item">
+                <span
+                    class="legend-swatch"
+                    style="background: var(--seat-confirmed)"
+                ></span
+                >Confirmado
+            </div>
+        </div>
+
+        <div id="checkout"></div>
+        <div id="statusMsg" class="status-msg"></div>
+
+        <script src="app.js"></script>
+    </body>
+</html>
