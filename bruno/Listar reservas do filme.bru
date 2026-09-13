@@ -1,0 +1,19 @@
+meta {
+  name: Listar reservas do filme
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/filmes/interestelar/reservas
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:8000
+}
+
+docs {
+  Lista todas as reservas confirmadas para o filme informado no path.
+}

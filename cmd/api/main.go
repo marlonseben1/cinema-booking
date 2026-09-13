@@ -14,6 +14,10 @@ import (
 
 const timeoutRPC = 5 * time.Second
 
+// @title			Cinema Booking API
+// @version		1.0
+// @description	API para reserva de assentos de cinema, com locking pessimista distribuído via RabbitMQ.
+// @BasePath		/
 func main() {
 	rabbitmqURL := os.Getenv("RABBITMQ_URL")
 	if rabbitmqURL == "" {

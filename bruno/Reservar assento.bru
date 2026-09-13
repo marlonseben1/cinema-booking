@@ -1,0 +1,32 @@
+meta {
+  name: Reservar assento
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/reservas
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "filme_id": "interestelar",
+    "assento_id": "B7",
+    "usuario_id": "marlon"
+  }
+}
+
+docs {
+  Confirma a reserva de um assento para um filme.
+
+  Respostas:
+  - 201: reserva confirmada
+  - 400: dados inválidos
+  - 409: assento já ocupado
+}

@@ -18,11 +18,28 @@ func NewHandler(service *reservas.Service) *Handler {
 }
 
 type reservarRequest struct {
-	FilmeID   string `json:"filme_id"`
-	AssentoID string `json:"assento_id"`
-	UsuarioID string `json:"usuario_id"`
+	FilmeID   string `json:"filme_id" example:"matrix"`
+	AssentoID string `json:"assento_id" example:"A1"`
+	UsuarioID string `json:"usuario_id" example:"marlon"`
 }
 
+type erroResponse struct {
+	Erro string `json:"erro"`
+}
+
+// Reservar godoc
+//
+//	@Summary		Reserva um assento
+//	@Description	Confirma a reserva de um assento para um filme, de forma serializada por assento
+//	@Tags			reservas
+//	@Accept			json
+//	@Produce		json
+//	@Param			reserva	body		reservarRequest	true	"Dados da reserva"
+//	@Success		201		{object}	reservas.Reserva
+//	@Failure		400		{object}	erroResponse
+//	@Failure		409		{object}	erroResponse	"Assento já ocupado"
+//	@Failure		500		{object}	erroResponse
+//	@Router			/reservas [post]
 func (h *Handler) Reservar(c *gin.Context) {
 	var req reservarRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -45,6 +62,15 @@ func (h *Handler) Reservar(c *gin.Context) {
 	c.JSON(http.StatusCreated, r)
 }
 
+// ListarReservas godoc
+//
+//	@Summary		Lista as reservas de um filme
+//	@Description	Retorna todas as reservas confirmadas para o filme informado
+//	@Tags			reservas
+//	@Produce		json
+//	@Param			filmeId	path		string	true	"ID do filme"
+//	@Success		200		{array}		reservas.Reserva
+//	@Router			/filmes/{filmeId}/reservas [get]
 func (h *Handler) ListarReservas(c *gin.Context) {
 	filmeID := c.Param("filmeId")
 

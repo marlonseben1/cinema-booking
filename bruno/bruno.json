@@ -1,0 +1,6 @@
+{
+  "version": "1",
+  "name": "Cinema Booking API",
+  "type": "collection",
+  "ignore": ["node_modules", ".git"]
+}

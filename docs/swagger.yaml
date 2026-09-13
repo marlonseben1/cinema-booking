@@ -1,0 +1,96 @@
+basePath: /
+definitions:
+  github_com_marlonseben_cinema-booking_internal_reservas.Reserva:
+    properties:
+      assentoID:
+        type: string
+      filmeID:
+        type: string
+      id:
+        type: string
+      status:
+        type: string
+      usuarioID:
+        type: string
+    type: object
+  internal_transport_http.erroResponse:
+    properties:
+      erro:
+        type: string
+    type: object
+  internal_transport_http.reservarRequest:
+    properties:
+      assento_id:
+        example: A1
+        type: string
+      filme_id:
+        example: matrix
+        type: string
+      usuario_id:
+        example: marlon
+        type: string
+    type: object
+info:
+  contact: {}
+  description: API para reserva de assentos de cinema, com locking pessimista distribuído
+    via RabbitMQ.
+  title: Cinema Booking API
+  version: "1.0"
+paths:
+  /filmes/{filmeId}/reservas:
+    get:
+      description: Retorna todas as reservas confirmadas para o filme informado
+      parameters:
+      - description: ID do filme
+        in: path
+        name: filmeId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_marlonseben_cinema-booking_internal_reservas.Reserva'
+            type: array
+      summary: Lista as reservas de um filme
+      tags:
+      - reservas
+  /reservas:
+    post:
+      consumes:
+      - application/json
+      description: Confirma a reserva de um assento para um filme, de forma serializada
+        por assento
+      parameters:
+      - description: Dados da reserva
+        in: body
+        name: reserva
+        required: true
+        schema:
+          $ref: '#/definitions/internal_transport_http.reservarRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_marlonseben_cinema-booking_internal_reservas.Reserva'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal_transport_http.erroResponse'
+        "409":
+          description: Assento já ocupado
+          schema:
+            $ref: '#/definitions/internal_transport_http.erroResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal_transport_http.erroResponse'
+      summary: Reserva um assento
+      tags:
+      - reservas
+swagger: "2.0"
