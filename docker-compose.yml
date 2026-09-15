@@ -87,6 +87,7 @@ services:
 
   gateway:
     image: nginx:1.27-alpine
+    restart: on-failure
     ports:
       - "8080:80"
     volumes:
